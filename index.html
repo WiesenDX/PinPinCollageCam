@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PinPin CollageCam</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="p5.js"></script>
+  <script src="p5.sound.min.js"></script>
+  <script src="sketch.js" defer></script>
+
+   <!-- Google tag (gtag.js) -->
+ <script async src="https://www.googletagmanager.com/gtag/js?id=G-06N4BE43S9"></script>
+ <script>
+   window.dataLayer = window.dataLayer || [];
+   function gtag(){dataLayer.push(arguments);}
+   gtag('js', new Date());
+ 
+   gtag('config', 'G-06N4BE43S9');
+ </script>
+ 
+</head>
+<body>
+  <div class="app-title">PinPin CollageCam</div>
+
+  
+  
+
+
+<!-- 仅在手机横屏时显示 -->
+<button id="toggleSidebar">📂</button>
+<button id="closeSidebar" style="display: none;">←</button>
+
+<div id="container">
+  <aside id="sidebar">
+    <div class="app-slogan">
+      Fragments of time,<br>pieced into poetry.
+    </div>
+
+    <div class="section">
+      <div class="label">选择模式</div>
+      <button id="modeFree" class="modeBtn">自由拼贴</button>
+      <button id="modeGrid" class="modeBtn">定格拼图</button>
+    </div>
+
+    <div id="freeOptions" class="section">
+      <div class="label">形状</div>
+      <button id="shapeRect" class="shapeBtn">▭</button>
+      <button id="shapeEllipse" class="shapeBtn">⬭</button>
+      <button id="shapeFlower" class="shapeBtn">❁</button>
+
+    </div>
+
+
+
+
+    <div id="gridOptions" class="section" style="display: none;">
+      <div class="label">网格大小</div>
+      <button class="gridSizeBtn" data-size="4">4×4</button>
+      <button class="gridSizeBtn" data-size="6">6×6</button>
+      <button class="gridSizeBtn" data-size="8">8×8</button>
+    </div>
+
+    <div class="section">
+  <div class="label">自由画笔</div>
+  <button id="toggleDrawing">🖍️ 开/关</button>
+  <!-- 画笔操作 -->
+<!-- <button id="undoDrawBtn">↩️ 画笔撤销</button> -->
+<button id="clearDrawBtn">🖌️清空</button>
+</div>
+
+    <div class="label">导出选项</div>
+    <div class="section bottom">
+      <button id="saveBtn">📷 导出图片</button>
+      <!-- 拼贴操作 -->
+<button id="undoSnapBtn">拼贴撤销</button>
+<button id="clearSnapBtn">拼贴清空</button>
+
+
+      <button id="saveDraft">保存草稿</button>
+<button id="loadDraft">载入草稿</button>
+
+    </div>
+
+          <div class="label">边框颜色</div>
+      <div id="colorButtons" class="color-group"></div>
+    
+  </aside>
+
+  <section id="main">
+    <div id="canvas-container"></div>
+    <button id="flipBtn" title="切换摄像头">🔄</button>
+  </section>
+</div>
+
+
+
+
+
+
+<script>
+  const sidebar = document.getElementById("sidebar");
+  const toggleBtn = document.getElementById("toggleSidebar");
+  const closeBtn = document.getElementById("closeSidebar");
+
+  function openSidebar() {
+    sidebar.classList.add("show");
+    toggleBtn.classList.remove("show");
+    closeBtn.classList.add("show");
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove("show");
+    toggleBtn.classList.add("show");
+    closeBtn.classList.remove("show");
+  }
+
+  toggleBtn.addEventListener("click", openSidebar);
+  closeBtn.addEventListener("click", closeSidebar);
+  toggleBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    openSidebar();
+  });
+  closeBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    closeSidebar();
+  });
+
+  // 默认只在小屏显示按钮
+  window.addEventListener("resize", () => {
+    if (window.innerWidth <= 768) {
+      toggleBtn.classList.add("show");
+    } else {
+      toggleBtn.classList.remove("show");
+      closeBtn.classList.remove("show");
+      sidebar.classList.remove("show");
+    }
+  });
+
+  // 初始判断
+  if (window.innerWidth <= 768) {
+    toggleBtn.classList.add("show");
+  }
+</script>
+
+
+
+
+</body>
+</html>

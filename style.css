@@ -1,0 +1,229 @@
+/* ===== 全局设置 ===== */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Noto Serif SC', serif;
+  background: linear-gradient(135deg, #4b92c6 0%, #294B93 100%);
+  color: #FFFFFF;
+  -webkit-overflow-scrolling: touch;
+}
+
+
+
+#container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* ===== 左侧 sidebar ===== */
+#sidebar {
+  width: 260px;
+  height: 100vh;
+  overflow-y: auto;
+  background: linear-gradient(135deg, #f8f4f0 0%, #f9f5f0 100%);
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: 2px 0 6px rgba(0,0,0,0.1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-title-floating {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  z-index: 1200;
+  font-size: 20px;
+  font-weight: 700;
+  color: #e8ecf1;
+  font-family: 'Noto Serif SC', serif;
+  background: linear-gradient(135deg, #4b6cb7, #182848); /* 高级蓝灰渐变 */
+  padding: 20px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  user-select: none;
+}
+
+.app-slogan {
+  position: absolute;
+  top: 28px; /* 距离顶部位置，跟标题保持一点距离 */
+  left: 120px;
+  font-size: 12px;
+  color: #aec3df;
+  font-family: 'Noto Serif SC', serif;
+  opacity: 0.85;
+  z-index: 1200;
+  pointer-events: none; /* 不影响点击 */
+  font-style: italic;
+  letter-spacing: 0.5px;
+
+}
+
+
+.section{
+  font-size: 14px;
+  margin: 8px 0 4px;
+  color: #555;
+}
+
+.label {
+  font-size: 14px;
+  margin: 20px 0 4px;
+  color: #555;
+}
+
+/* ===== 主画面区 ===== */
+#main {
+  flex: 1;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f2f8fd;
+}
+
+#canvas-container canvas {
+  max-width: 100%;
+  height: auto;
+  width: auto;
+  display: block;
+}
+
+
+/* ===== 通用按钮 ===== */
+.color-group button, button {
+  pointer-events: auto;
+  touch-action: manipulation;
+  display: inline-block;
+  margin: 4px 6px 4px 0;
+
+  border: none;
+  border-radius: 8px;
+
+  z-index: 10;
+
+  background-color: #ffffff;
+  color: #002D57;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 16px;
+  font-family: 'Noto Serif SC', serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #3A5BA0;
+}
+
+button.active {
+  background-color: #00529E !important;
+  color: white !important;
+}
+
+
+
+/* ===== 切换摄像头按钮（悬浮） ===== */
+#flipBtn {
+  position: absolute;
+  top: 55px;
+  right: 16px;
+  z-index: 1200;
+  font-size: 16px;
+  padding: 8px 12px;
+  background: #F6DEC4;
+  border-radius: 8px; /* 👈 从 100% 改为圆角矩形 */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  z-index: 1001;
+  font-family: 'Noto Serif SC', serif;
+  color: #333;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+#flipBtn:hover {
+  background: #ffe7ba;
+}
+
+
+/* ===== 切换 sidebar 按钮，仅在横屏手机上显示 ===== */
+/* 默认隐藏 sidebar 的切换按钮 */
+#toggleSidebar {
+  display: none;
+}
+
+/* 手机模式（小屏）统一处理横竖屏 */
+@media (max-width: 768px) {
+  .app-title-floating {
+    font-size: 16px;
+    padding: 4px 10px;
+  }
+  
+  #sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 260px;
+    height: 100%;
+    display: none;
+    background: #f9f5f0;
+    flex-direction: column;
+    box-shadow: 2px 0 6px rgba(0,0,0,0.15);
+    z-index: 1000;
+  }
+
+  #sidebar.show {
+    display: flex !important;
+  }
+
+/* 折叠按钮浮动右上角 */
+#toggleSidebar,
+#closeSidebar {
+  position: absolute;
+  top: 30px;
+  right: 16px;
+  z-index: 1200;
+  font-size: 16px;
+  padding: 8px 12px;
+  background: #00529E;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Noto Serif SC', serif;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  cursor: pointer;
+  display: none; /* 默认隐藏 */
+}
+
+#toggleSidebar.show,
+#closeSidebar.show {
+  display: block !important;
+}
+
+#toggleSidebar:hover,
+#closeSidebar:hover {
+  background: #D0E4FF;
+}
+
+
+  #main {
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #canvas-container canvas {
+    width: auto !important;
+    height: 70vh !important;
+  }
+}
+
