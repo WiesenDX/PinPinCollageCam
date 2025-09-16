@@ -1,1 +1,1 @@
-# collageCam
+# PinPinCollageCam
