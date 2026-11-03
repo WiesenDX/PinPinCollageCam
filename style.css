@@ -227,3 +227,34 @@ button.active {
   }
 }
 
+
+
+/* ===== Safari 摄像头启动提示 ===== */
+#cameraPrompt {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1200;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  transition: opacity 0.2s ease;
+}
+#cameraPrompt.camera-ready {
+  opacity: 0;
+  pointer-events: none;
+}
+#startCameraBtn {
+  background: #00529E;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+#startCameraBtn:disabled {
+  opacity: 0.65;
+}
+#cameraStatus {
+  margin-top: 8px;
+  max-width: 280px;
+  color: #333;
+  font-size: 13px;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+}
