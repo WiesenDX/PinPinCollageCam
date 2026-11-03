@@ -34,7 +34,6 @@ function preload() {
 let mode = "free";
 
 function setup() {
-  startCamera();
   adjustCanvasSize(); // 👉 初次设置 canvas 尺寸
 
   const canvas = createCanvas(640, 480);
@@ -44,6 +43,15 @@ function setup() {
   cellH = height / gridSize;
 
   setupButtons();
+
+  const startBtn = select("#startCameraBtn");
+  if (startBtn) {
+    makeTouchable(startBtn).mousePressed(() => {
+      startBtn.attribute("disabled", "true");
+      setCameraStatus("正在请求摄像头权限…");
+      startCamera();
+    });
+  }
 
   for (let i = 0; i < gridSize * gridSize; i++) {
     gridSnaps.push(null);
@@ -128,27 +136,68 @@ function adjustCanvasSize() {
   }
 }
 
+function setCameraStatus(message) {
+  const status = document.getElementById("cameraStatus");
+  if (status) status.textContent = message;
+}
+
+function cameraStarted() {
+  camReady = true;
+  const prompt = document.getElementById("cameraPrompt");
+  if (prompt) prompt.classList.add("camera-ready");
+  setCameraStatus("摄像头已开启");
+}
+
+function cameraFailed(message) {
+  camReady = false;
+  const startBtn = document.getElementById("startCameraBtn");
+  if (startBtn) startBtn.removeAttribute("disabled");
+  setCameraStatus(message);
+}
+
 function startCamera() {
+  if (!window.isSecureContext) {
+    cameraFailed("请使用 HTTPS 打开此网页");
+    return;
+  }
+
   if (cam) cam.remove();
   camReady = false;
 
-  cam = createCapture({
-    video: {
-      facingMode: usingFrontCamera ? "user" : "environment",
-      width: { ideal: 640 },
-      height: { ideal: 480 }
-    },
-    audio: false
-  });
-  cam.size(640, 480);
-  cam.hide();
+  try {
+    cam = createCapture({
+      video: {
+        facingMode: usingFrontCamera ? "user" : "environment",
+        width: { ideal: 640 },
+        height: { ideal: 480 }
+      },
+      audio: false
+    });
+    cam.size(640, 480);
+    cam.hide();
 
-  let checkInterval = setInterval(() => {
-    if (cam.width > 0 && cam.height > 0) {
-      camReady = true;
-      clearInterval(checkInterval);
+    const video = cam.elt;
+    let elapsed = 0;
+    const checkInterval = setInterval(() => {
+      elapsed += 100;
+      if (video && (video.readyState >= 2 || video.videoWidth > 0)) {
+        clearInterval(checkInterval);
+        cameraStarted();
+      } else if (elapsed >= 8000) {
+        clearInterval(checkInterval);
+        cameraFailed("没有拿到摄像头。请在 Safari 的网站设置中允许摄像头后再试。");
+      }
+    }, 100);
+
+    if (video) {
+      video.addEventListener("error", () => {
+        clearInterval(checkInterval);
+        cameraFailed("摄像头启动失败，请检查 Safari 的摄像头权限。");
+      }, { once: true });
     }
-  }, 100);
+  } catch (error) {
+    cameraFailed("摄像头启动失败，请检查 Safari 的摄像头权限。");
+  }
 }
 
 function draw() {
